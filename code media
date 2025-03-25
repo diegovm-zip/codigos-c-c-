@@ -1,0 +1,35 @@
+int main() {
+
+float valor1, valor2, valor3, valor4, resultado;
+
+
+
+    printf("Bem-vindo à calculadora de médias!\n");
+
+    printf("Insira ao menos 4 notas:\n");
+
+    printf("Digite a primeira nota: ");
+
+    scanf("%d", &valor1);
+
+    printf("Digite a segunda nota: ");
+
+    scanf("%d", &valor2);
+
+    printf("Digite a terceira nota: ");
+
+    scanf("%d", &valor3);
+
+    printf("Digite a última nota: ");
+
+    scanf("%d", &valor4);
+
+
+
+    resultado = (valor1 + valor2 + valor3 + valor4) / 4;
+
+
+
+    printf("Sua média é de %d\n", resultado);
+return 0
+}
