@@ -1,25 +1,54 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #define TAMANHO_FILA 5
 
-int main() {
-    int fila[TAMANHO_FILA];
-    int frente = 0, tras = 0;
+// Estrutura para a fila
+typedef struct {
+    int senhas[TAMANHO_FILA]; // Vetor que armazena as senhas
+    int inicio;               // Índice do primeiro elemento da fila
+    int fim;                  // Índice do último elemento da fila
+} Fila;
 
-    // Gerar e inserir 5 senhas na fila
+// Função para inicializar a fila
+void inicializarFila(Fila *fila) {
+    fila->inicio = 0;
+    fila->fim = 0;
+}
+
+// Função para adicionar senha na fila
+void adicionarSenha(Fila *fila, int senha) {
+    if (fila->fim < TAMANHO_FILA) {
+        fila->senhas[fila->fim] = senha;
+        fila->fim++;
+    } else {
+        printf("Fila cheia! Não é possível adicionar mais senhas.\n");
+    }
+}
+
+// Função para remover senha da fila e atender o cliente
+void atenderCliente(Fila *fila) {
+    if (fila->inicio < fila->fim) {
+        int senhaAtendida = fila->senhas[fila->inicio];
+        fila->inicio++;
+        printf("Atendendo senha %d\n", senhaAtendida);
+    } else {
+        printf("Fila vazia! Não há clientes para atender.\n");
+    }
+}
+
+int main() {
+    Fila fila;
+    inicializarFila(&fila);
+
+    // Gerando 5 senhas e adicionando na fila
     for (int i = 1; i <= TAMANHO_FILA; i++) {
-        fila[tras] = i;
-        tras = (tras + 1) % TAMANHO_FILA; // Atualiza a posição de "tras"
+        adicionarSenha(&fila, i);
     }
 
-    // Atendendo os clientes
-    printf("Iniciando o atendimento...\n");
-    while (frente != tras) {
-        int senha_atendida = fila[frente];
-        printf("Atendendo senha %d\n", senha_atendida);
-        
-        // Atualiza a frente da fila
-        frente = (frente + 1) % TAMANHO_FILA;
+    // Atendendo os clientes um por um
+    while (fila.inicio < fila.fim) {
+        atenderCliente(&fila);
     }
 
     return 0;
