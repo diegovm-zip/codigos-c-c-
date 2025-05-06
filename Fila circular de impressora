@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define TAMANHO_FILA 4
+
+// Estrutura para a fila circular
+typedef struct {
+    char documentos[TAMANHO_FILA][50]; // Vetor para armazenar os documentos
+    int inicio;                        // Índice do primeiro elemento (documento a ser impresso)
+    int fim;                           // Índice do próximo lugar disponível
+} FilaCircular;
+
+// Função para inicializar a fila circular
+void inicializarFila(FilaCircular *fila) {
+    fila->inicio = 0;
+    fila->fim = 0;
+}
+
+// Função para adicionar um documento na fila circular
+void adicionarDocumento(FilaCircular *fila, const char *documento) {
+    if ((fila->fim + 1) % TAMANHO_FILA != fila->inicio) {  // Verifica se a fila não está cheia
+        strcpy(fila->documentos[fila->fim], documento);
+        fila->fim = (fila->fim + 1) % TAMANHO_FILA;
+    } else {
+        printf("Fila cheia! Não é possível adicionar mais documentos.\n");
+    }
+}
+
+// Função para imprimir o próximo documento da fila e adicionar um novo
+void imprimirDocumento(FilaCircular *fila, const char *novoDocumento) {
+    if (fila->inicio != fila->fim) {  // Verifica se há documentos na fila
+        printf("Imprimindo: %s\n", fila->documentos[fila->inicio]);
+        fila->inicio = (fila->inicio + 1) % TAMANHO_FILA; // Remove o documento da fila (move o início)
+
+        // Adiciona o novo documento ao final da fila
+        adicionarDocumento(fila, novoDocumento);
+    } else {
+        printf("Não há documentos na fila para imprimir.\n");
+    }
+}
+
+int main() {
+    FilaCircular fila;
+    inicializarFila(&fila);
+
+    // Adicionando 4 documentos na fila
+    adicionarDocumento(&fila, "Documento 1");
+    adicionarDocumento(&fila, "Documento 2");
+    adicionarDocumento(&fila, "Documento 3");
+    adicionarDocumento(&fila, "Documento 4");
+
+    // Simulando a impressão e adição de novos documentos
+    for (int i = 0; i < 10; i++) {
+        char novoDocumento[50];
+        snprintf(novoDocumento, sizeof(novoDocumento), "Documento %d", i + 5); // Gerando novos documentos
+
+        imprimirDocumento(&fila, novoDocumento);
+    }
+
+    return 0;
+}
