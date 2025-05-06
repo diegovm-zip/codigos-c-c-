@@ -1,0 +1,32 @@
+int main() {
+int numeros[6];
+int maior, menor;
+int posicao_maior, posicao_menor;
+
+// Leitura dos 6 números
+for(int i = 0; i < 6; i++) {
+    printf("Digite o %dº número inteiro: ", i + 1);
+    scanf("%d", &numeros[i]);
+
+    // Inicialização de maior e menor na primeira iteração
+    if(i == 0) {
+        maior = menor = numeros[i];
+        posicao_maior = posicao_menor = i;
+    } else {
+        if(numeros[i] > maior) {
+            maior = numeros[i];
+            posicao_maior = i;
+        }
+        if(numeros[i] < menor) {
+            menor = numeros[i];
+            posicao_menor = i;
+        }
+    }
+}
+
+// Resultados
+printf("\nMaior número: %d (posição %d)\n", maior, posicao_maior);
+printf("Menor número: %d (posição %d)\n", menor, posicao_menor);
+
+return 0;
+}
