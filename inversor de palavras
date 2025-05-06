@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <string.h>
+
+#define TAMANHO 100
+
+int main() {
+char palavra[TAMANHO];
+char pilha[TAMANHO];
+int topo = -1;
+
+printf("Digite uma palavra: ");
+fgets(palavra, TAMANHO, stdin);
+
+// Remover o caractere de nova linha '\n', se existir
+size_t len = strlen(palavra);
+if (len > 0 && palavra[len - 1] == '\n') {
+    palavra[len - 1] = '\0';
+    len--;
+}
+
+// Empilha cada caractere da palavra
+for (int i = 0; i < len; i++) {
+    pilha[++topo] = palavra[i];
+}
+
+// Desempilha para exibir a palavra invertida
+printf("Palavra invertida: ");
+while (topo >= 0) {
+    printf("%c", pilha[topo--]);
+}
+printf("\n");
+
+return 0;
+}
