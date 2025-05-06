@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define TAMANHO_FILA 10
+
+// Estrutura para a pessoa
+typedef struct {
+    int idade;
+    char nome[50];
+} Pessoa;
+
+// Estrutura para a fila
+typedef struct {
+    Pessoa filaPreferencial[TAMANHO_FILA]; // Fila de pessoas com idade ≥ 60
+    Pessoa filaNormal[TAMANHO_FILA];       // Fila de pessoas com idade < 60
+    int inicioPreferencial;                // Índice da fila preferencial
+    int fimPreferencial;                   // Fim da fila preferencial
+    int inicioNormal;                      // Índice da fila normal
+    int fimNormal;                         // Fim da fila normal
+} Fila;
+
+// Função para inicializar a fila
+void inicializarFila(Fila *fila) {
+    fila->inicioPreferencial = 0;
+    fila->fimPreferencial = 0;
+    fila->inicioNormal = 0;
+    fila->fimNormal = 0;
+}
+
+// Função para adicionar uma pessoa na fila
+void adicionarPessoa(Fila *fila, char *nome, int idade) {
+    Pessoa pessoa;
+    pessoa.idade = idade;
+    snprintf(pessoa.nome, sizeof(pessoa.nome), "%s", nome);
+
+    if (idade >= 60) {
+        if (fila->fimPreferencial < TAMANHO_FILA) {
+            fila->filaPreferencial[fila->fimPreferencial] = pessoa;
+            fila->fimPreferencial++;
+        } else {
+            printf("Fila preferencial cheia! Não é possível adicionar a pessoa %s.\n", nome);
+        }
+    } else {
+        if (fila->fimNormal < TAMANHO_FILA) {
+            fila->filaNormal[fila->fimNormal] = pessoa;
+            fila->fimNormal++;
+        } else {
+            printf("Fila normal cheia! Não é possível adicionar a pessoa %s.\n", nome);
+        }
+    }
+}
+
+// Função para atender a próxima pessoa
+void atenderPessoa(Fila *fila) {
+    if (fila->inicioPreferencial < fila->fimPreferencial) {
+        Pessoa pessoaAtendida = fila->filaPreferencial[fila->inicioPreferencial];
+        fila->inicioPreferencial++;
+        printf("Atendendo preferencial: %s, idade: %d\n", pessoaAtendida.nome, pessoaAtendida.idade);
+    } else if (fila->inicioNormal < fila->fimNormal) {
+        Pessoa pessoaAtendida = fila->filaNormal[fila->inicioNormal];
+        fila->inicioNormal++;
+        printf("Atendendo normal: %s, idade: %d\n", pessoaAtendida.nome, pessoaAtendida.idade);
+    } else {
+        printf("Não há mais pessoas na fila para atender.\n");
+    }
+}
+
+int main() {
+    Fila fila;
+    inicializarFila(&fila);
+
+    // Adicionando pessoas na fila
+    adicionarPessoa(&fila, "João", 45);
+    adicionarPessoa(&fila, "Maria", 65);
+    adicionarPessoa(&fila, "José", 60);
+    adicionarPessoa(&fila, "Ana", 25);
+    adicionarPessoa(&fila, "Carlos", 75);
+    adicionarPessoa(&fila, "Luiza", 30);
+
+    // Atendendo as pessoas, primeiro as preferenciais e depois as normais
+    printf("\nInício do atendimento:\n");
+    while (fila.inicioPreferencial < fila.fimPreferencial || fila.inicioNormal < fila.fimNormal) {
+        atenderPessoa(&fila);
+    }
+
+    return 0;
+}
